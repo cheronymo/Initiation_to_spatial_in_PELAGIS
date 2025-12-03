@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to Spatial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Introduction_to_Spatial_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Introduction_to_Spatial_files/libs/quarto-html/quarto.js"></script>
+<script src="Introduction_to_Spatial_files/libs/quarto-html/popper.min.js"></script>
+<script src="Introduction_to_Spatial_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Introduction_to_Spatial_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Introduction_to_Spatial_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Introduction_to_Spatial_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Introduction_to_Spatial_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Introduction_to_Spatial_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Introduction_to_Spatial_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#usefull-functions" id="toc-usefull-functions" class="nav-link" data-scroll-target="#usefull-functions">Usefull functions</a>
+  <ul class="collapse">
+  <li><a href="#st_point" id="toc-st_point" class="nav-link" data-scroll-target="#st_point">st_point</a></li>
+  <li><a href="#st_linestring" id="toc-st_linestring" class="nav-link" data-scroll-target="#st_linestring">st_linestring</a></li>
+  <li><a href="#st_polygon" id="toc-st_polygon" class="nav-link" data-scroll-target="#st_polygon">st_polygon</a></li>
+  <li><a href="#st_layer" id="toc-st_layer" class="nav-link" data-scroll-target="#st_layer">st_layer</a></li>
+  <li><a href="#st_read" id="toc-st_read" class="nav-link" data-scroll-target="#st_read">st_read</a></li>
+  <li><a href="#vizualize" id="toc-vizualize" class="nav-link" data-scroll-target="#vizualize">Vizualize</a></li>
+  <li><a href="#st_write" id="toc-st_write" class="nav-link" data-scroll-target="#st_write">st_write</a></li>
+  <li><a href="#st_drop_geometry" id="toc-st_drop_geometry" class="nav-link" data-scroll-target="#st_drop_geometry">st_drop_geometry</a></li>
+  <li><a href="#st_as_sf" id="toc-st_as_sf" class="nav-link" data-scroll-target="#st_as_sf">st_as_sf</a></li>
+  <li><a href="#st_coordinates" id="toc-st_coordinates" class="nav-link" data-scroll-target="#st_coordinates">st_coordinates</a></li>
+  <li><a href="#st_transform" id="toc-st_transform" class="nav-link" data-scroll-target="#st_transform">st_transform</a></li>
+  <li><a href="#st_convex_hull" id="toc-st_convex_hull" class="nav-link" data-scroll-target="#st_convex_hull">st_convex_hull</a></li>
+  <li><a href="#st_area" id="toc-st_area" class="nav-link" data-scroll-target="#st_area">st_area</a></li>
+  <li><a href="#st_length" id="toc-st_length" class="nav-link" data-scroll-target="#st_length">st_length</a></li>
+  <li><a href="#worldmap" id="toc-worldmap" class="nav-link" data-scroll-target="#worldmap">worldmap</a></li>
+  <li><a href="#st_crop" id="toc-st_crop" class="nav-link" data-scroll-target="#st_crop">st_crop</a></li>
+  <li><a href="#st_union" id="toc-st_union" class="nav-link" data-scroll-target="#st_union">st_union</a></li>
+  <li><a href="#st_difference" id="toc-st_difference" class="nav-link" data-scroll-target="#st_difference">st_difference</a></li>
+  <li><a href="#st_make_grid" id="toc-st_make_grid" class="nav-link" data-scroll-target="#st_make_grid">st_make_grid</a></li>
+  <li><a href="#st_join" id="toc-st_join" class="nav-link" data-scroll-target="#st_join">st_join</a></li>
+  <li><a href="#st_intersects" id="toc-st_intersects" class="nav-link" data-scroll-target="#st_intersects">st_intersects</a></li>
+  <li><a href="#st_intersection" id="toc-st_intersection" class="nav-link" data-scroll-target="#st_intersection">st_intersection</a></li>
+  <li><a href="#st_buffer" id="toc-st_buffer" class="nav-link" data-scroll-target="#st_buffer">st_buffer</a></li>
+  <li><a href="#st_crs" id="toc-st_crs" class="nav-link" data-scroll-target="#st_crs">st_crs</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introduction to Spatial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This document is an introduction to spatial tools, and in particular the {sf} library.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.12.2, GDAL 3.9.3, PROJ 9.4.1; sf_use_s2() is TRUE</code></pre>
+</div>
+</div>
+<p>{sf} package is a support for simple feature access, a standardized way to encode and analyze spatial vector data. It combines several functions needed to manipulate geospatial data in an easy way.</p>
+<p>The key element in {sf} is the GeoPackage (.GPKG). The GeoPackage is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The following sections will present how {sf} can help to manipulate GeoPackage.</p>
+<p>GeoPackage can take different shapes, described in the following table.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>POINT</td>
+<td>zero-dimensional geometry containing a single point</td>
+</tr>
+<tr class="even">
+<td>LINESTRING</td>
+<td>sequence of points connected by straight, non-self intersecting line segments; one-dimensional geometry</td>
+</tr>
+<tr class="odd">
+<td>POLYGON</td>
+<td>geometry with a positive area (two-dimensional); sequence of points form a closed, non-self intersecting ring; the first ring denotes the exterior ring, zero or more subsequent rings denote holes in this exterior ring</td>
+</tr>
+<tr class="even">
+<td>MULTIPOINT</td>
+<td>set of points; a MULTIPOINT is simple if no two Points in the MULTIPOINT are equal</td>
+</tr>
+<tr class="odd">
+<td>MULTILINESTRING</td>
+<td>set of linestrings</td>
+</tr>
+<tr class="even">
+<td>MULTIPOLYGON</td>
+<td>set of polygons</td>
+</tr>
+<tr class="odd">
+<td>GEOMETRYCOLLECTION</td>
+<td>set of geometries of any type except GEOMETRYCOLLECTION</td>
+</tr>
+</tbody>
+</table>
+<p>Coordinate reference system (CRS) is a framework used to precisely measure locations on the surface of Earth as coordinates. It is thus the application of the abstract mathematics of coordinate systems and analytic geometry to geographic space. Numerous CRS exist, such as:</p>
+<ul>
+<li><p>4326: WGS 84 in degree</p></li>
+<li><p>3857: WGS 84 in meter</p></li>
+</ul>
+</section>
+<section id="usefull-functions" class="level2">
+<h2 class="anchored" data-anchor-id="usefull-functions">Usefull functions</h2>
+<p>Here, we will present a non-exhaustive list of functions available in the {sf} package that are useful for manipulating data from PELAGIS.</p>
+<section id="st_point" class="level3">
+<h3 class="anchored" data-anchor-id="st_point">st_point</h3>
+<p>A point is created by providing a list with the position of the point on the x-axis and y-axis only.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>point <span class="ot">&lt;-</span> <span class="fu">st_point</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span> )</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>point</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POINT (1 2)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(point)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_linestring" class="level3">
+<h3 class="anchored" data-anchor-id="st_linestring">st_linestring</h3>
+<p>A line is created by providing a matrix with the position of each points on the x-axis and y-axis</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>line <span class="ot">&lt;-</span> <span class="fu">st_linestring</span>( <span class="fu">matrix</span>( <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> T) )</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>line</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>LINESTRING (1 1, 2 2)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(line)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_polygon" class="level3">
+<h3 class="anchored" data-anchor-id="st_polygon">st_polygon</h3>
+<p>A polygon is created by providing a list containing a matrix with the position of each point on the x-axis and y-axis representing the extent of the polygon.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>poly <span class="ot">&lt;-</span> <span class="fu">st_polygon</span>(<span class="fu">list</span>(<span class="fu">cbind</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>))))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>poly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(poly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_layer" class="level3">
+<h3 class="anchored" data-anchor-id="st_layer">st_layer</h3>
+<p>A GeoPackage (.gpkg) usually contains several layers with several data frames in sf format. They are completely different. Each layers can be characterised by:</p>
+<ul>
+<li><p>layer_name</p></li>
+<li><p>geometry_type</p></li>
+<li><p>features (row number)</p></li>
+<li><p>fields (column number)</p></li>
+<li><p>crs_name</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_layers</span>(<span class="st">"./data/effort_table_2025-11-03.gpkg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Driver: GPKG 
+Available layers:
+             layer_name geometry_type features fields crs_name
+1           effort_brut         Point      816     13   WGS 84
+2     effort_linearized   Line String      424     10   WGS 84
+3      effort_segmented         Point      954     10   WGS 84
+4  Sightings_with_SegID         Point      870     18   WGS 84
+5 effort_with_sightings         Point      954     14   WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="st_read" class="level3">
+<h3 class="anchored" data-anchor-id="st_read">st_read</h3>
+<p>Read simple features or layers from files or databases. In order to read a geopackage, it is needed to give the layer name.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data_geopackage <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"./data/effort_table_2025-11-03.gpkg"</span>, <span class="at">layer =</span> <span class="st">"effort_brut"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(Longitude, Latitude, Beaufort)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `effort_brut' from data source 
+  `C:\Users\gchero\Documents\R Script\Introduction_to_spatial\data\effort_table_2025-11-03.gpkg' 
+  using driver `GPKG'
+Simple feature collection with 816 features and 13 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -5.818938 ymin: 43.6641 xmax: -1.225622 ymax: 48.3785
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data_geopackage</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 816 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -5.818938 ymin: 43.6641 xmax: -1.225622 ymax: 48.3785
+Geodetic CRS:  WGS 84
+First 10 features:
+   Longitude Latitude Beaufort                       geom
+1  -4.541957 48.34592        2 POINT (-4.541957 48.34592)
+2  -4.620433 48.29903        2 POINT (-4.620433 48.29903)
+3  -4.709607 48.22907        2 POINT (-4.709607 48.22907)
+4  -4.709600 48.22906        2   POINT (-4.7096 48.22906)
+5  -4.711338 47.96489        2 POINT (-4.711338 47.96489)
+6  -4.711300 47.96480        3    POINT (-4.7113 47.9648)
+7  -4.680827 47.89950        3  POINT (-4.680827 47.8995)
+8  -4.624492 47.83268        3 POINT (-4.624492 47.83268)
+9  -4.504307 47.66183        3 POINT (-4.504307 47.66183)
+10 -4.393653 47.51744        3 POINT (-4.393653 47.51744)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(data_geopackage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+</div>
+</section>
+<section id="vizualize" class="level3">
+<h3 class="anchored" data-anchor-id="vizualize">Vizualize</h3>
+<p>An SF object can be visualized in several different ways. In the following sections, we will present two fairly simple methods.</p>
+<section id="plot" class="level5">
+<h5 class="anchored" data-anchor-id="plot">plot</h5>
+<p>The basic “plot” function allows you to project all dimensions at the same time in a panel.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data_geopackage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="geom_sf" class="level5">
+<h5 class="anchored" data-anchor-id="geom_sf">geom_sf</h5>
+<p>The {ggplot2} package provides the geom_sf function, which allows sf objects to be plotted in a graph. Without any parameters, the function simply plots the geometries. It is also possible to plot the geometries in different colours, using ‘colour’ for points, lines and polygon borders, or ‘fill’ for the interior of polygons.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>data_geopackage <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data_geopackage <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color=</span>Beaufort))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="st_write" class="level3">
+<h3 class="anchored" data-anchor-id="st_write">st_write</h3>
+<p>Once the sf object has been manipulated on R, it can be rendered in GeoPackage using the st_write function. Simply provide the sf object and the rendering file with the GeoPackage in .gpkg format (dsn). It is also possible to add parameters to the export:</p>
+<ul>
+<li><p>layer: layer name</p></li>
+<li><p>append: should we append to an existing layer, or replace it? if TRUE append, if FALSE replace.</p></li>
+<li><p>delete_dsn:delete data source dsn before attempting to write?</p></li>
+<li><p>delete_layer: delete layer before attempting to write? The default for st_write is FALSE which raises an error if the layer exists.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(data_geopackage, <span class="at">dsn =</span> <span class="st">"./export/export_test.gpkg"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(data_geopackage, <span class="at">dsn =</span> <span class="st">"./export/export_test.gpkg"</span>, <span class="at">layer =</span> <span class="st">"test"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(data_geopackage, <span class="at">dsn =</span> <span class="st">"./export/export_test.gpkg"</span>, <span class="at">append =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(data_geopackage, <span class="at">dsn =</span> <span class="st">"./export/export_test.gpkg"</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="st_drop_geometry" class="level3">
+<h3 class="anchored" data-anchor-id="st_drop_geometry">st_drop_geometry</h3>
+<p>This function allows you to remove the geometry column from an sf object to transform it into a data frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> data_geopackage <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Longitude Latitude Beaufort
+1 -4.541957 48.34592        2
+2 -4.620433 48.29903        2
+3 -4.709607 48.22907        2
+4 -4.709600 48.22906        2
+5 -4.711338 47.96489        2
+6 -4.711300 47.96480        3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(data_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+</section>
+<section id="st_as_sf" class="level3">
+<h3 class="anchored" data-anchor-id="st_as_sf">st_as_sf</h3>
+<p>This function allows you to convert a data frame into an sf object. You must specify the ‘Longitude’ and ‘Latitude’ columns (in that order) and the coordinate reference system associate (crs).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sf</span>(data_df, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"Longitude"</span>, <span class="st">"Latitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 816 features and 1 field
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -5.818938 ymin: 43.6641 xmax: -1.225622 ymax: 48.3785
+Geodetic CRS:  WGS 84
+First 10 features:
+   Beaufort                   geometry
+1         2 POINT (-4.541957 48.34592)
+2         2 POINT (-4.620433 48.29903)
+3         2 POINT (-4.709607 48.22907)
+4         2   POINT (-4.7096 48.22906)
+5         2 POINT (-4.711338 47.96489)
+6         3    POINT (-4.7113 47.9648)
+7         3  POINT (-4.680827 47.8995)
+8         3 POINT (-4.624492 47.83268)
+9         3 POINT (-4.504307 47.66183)
+10        3 POINT (-4.393653 47.51744)</code></pre>
+</div>
+</div>
+</section>
+<section id="st_coordinates" class="level3">
+<h3 class="anchored" data-anchor-id="st_coordinates">st_coordinates</h3>
+<p>This function extracts the coordinates of the SF object as a matrix with two entries.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">st_coordinates</span>(data_geopackage))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             X        Y
+[1,] -4.541957 48.34592
+[2,] -4.620433 48.29903
+[3,] -4.709607 48.22907
+[4,] -4.709600 48.22906
+[5,] -4.711338 47.96489
+[6,] -4.711300 47.96480</code></pre>
+</div>
+</div>
+<p>One possible use is to add the columns with the coordinates to the sf object using dplyr.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">lon =</span> <span class="fu">st_coordinates</span>(data_geopackage)[,<span class="dv">1</span>],</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">lat =</span> <span class="fu">st_coordinates</span>(data_geopackage)[,<span class="dv">2</span>]) <span class="sc">%&gt;%</span> <span class="fu">cbind</span>(data_geopackage<span class="sc">$</span>geom) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        lon      lat                   geometry
+1 -4.541957 48.34592 POINT (-4.541957 48.34592)
+2 -4.620433 48.29903 POINT (-4.620433 48.29903)
+3 -4.709607 48.22907 POINT (-4.709607 48.22907)
+4 -4.709600 48.22906   POINT (-4.7096 48.22906)
+5 -4.711338 47.96489 POINT (-4.711338 47.96489)
+6 -4.711300 47.96480    POINT (-4.7113 47.9648)</code></pre>
+</div>
+</div>
+</section>
+<section id="st_transform" class="level3">
+<h3 class="anchored" data-anchor-id="st_transform">st_transform</h3>
+<p>The function transforms or converts coordinates of simple feature.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>data_geopackage <span class="sc">%&gt;%</span> <span class="fu">st_transform</span>(<span class="dv">3857</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>() <span class="co"># transform degree to meter</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -524463.7 ymin: 6101001 xmax: -505608.3 ymax: 6164598
+Projected CRS: WGS 84 / Pseudo-Mercator
+  Longitude Latitude Beaufort                      geom
+1 -4.541957 48.34592        2 POINT (-505608.3 6164598)
+2 -4.620433 48.29903        2 POINT (-514344.3 6156748)
+3 -4.709607 48.22907        2 POINT (-524271.1 6145049)
+4 -4.709600 48.22906        2 POINT (-524270.3 6145048)
+5 -4.711338 47.96489        2 POINT (-524463.7 6101016)
+6 -4.711300 47.96480        3 POINT (-524459.5 6101001)</code></pre>
+</div>
+</div>
+</section>
+<section id="st_convex_hull" class="level3">
+<h3 class="anchored" data-anchor-id="st_convex_hull">st_convex_hull</h3>
+<p>This function creates the convex hull of a set of points.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>point_to_polygone <span class="ot">&lt;-</span> data_geopackage <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_union</span>() <span class="sc">%&gt;%</span>                           <span class="co"># from point to multi-point</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_convex_hull</span>()                         <span class="co"># from multi-point to polygon around</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(point_to_polygone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_area" class="level3">
+<h3 class="anchored" data-anchor-id="st_area">st_area</h3>
+<p>The st_area() function is used to calculate areas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_area</span>(point_to_polygone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>110914112232 [m^2]</code></pre>
+</div>
+</div>
+</section>
+<section id="st_length" class="level3">
+<h3 class="anchored" data-anchor-id="st_length">st_length</h3>
+<p>The st_length() function is used to calculate distance</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_length</span>(line)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.414214</code></pre>
+</div>
+</div>
+</section>
+<section id="worldmap" class="level3">
+<h3 class="anchored" data-anchor-id="worldmap">worldmap</h3>
+<p>The {rnaturalearth} package contains the world map in polygon format. It is possible to extract the world map from it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>worldmap <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">'medium'</span>, <span class="at">type =</span> <span class="st">'map_units'</span>,<span class="at">returnclass =</span> <span class="st">'sf'</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_crop" class="level3">
+<h3 class="anchored" data-anchor-id="st_crop">st_crop</h3>
+<p>It crops an sf object to a specific rectangle.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>europe <span class="ot">&lt;-</span> <span class="fu">st_crop</span>(worldmap, </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">xmin =</span> <span class="sc">-</span><span class="dv">10</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">xmax =</span> <span class="dv">20</span>,</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymin =</span> <span class="dv">35</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attribute variables are assumed to be spatially constant throughout
+all geometries</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(europe) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_union" class="level3">
+<h3 class="anchored" data-anchor-id="st_union">st_union</h3>
+<p>Combine several features geometries into one, without unioning or resolving internal boundaries.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(europe <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(sovereignt, type, name_en))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 3 fields
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: -7.542969 ymin: 41.89756 xmax: 12.43916 ymax: 60.72645
+Geodetic CRS:  WGS 84
+       sovereignt              type      name_en                       geometry
+6         Vatican Sovereign country Vatican City POLYGON ((12.43838 41.9062,...
+29 United Kingdom           Country       Jersey POLYGON ((-2.082227 49.2553...
+30 United Kingdom           Country     Guernsey POLYGON ((-2.520898 49.5063...
+31 United Kingdom           Country  Isle of Man POLYGON ((-4.392285 54.2253...
+32 United Kingdom          Geo unit        Wales MULTIPOLYGON (((-3.326172 5...
+33 United Kingdom          Geo unit     Scotland MULTIPOLYGON (((-2.14707 55...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>europe <span class="ot">&lt;-</span> <span class="fu">st_union</span>(europe)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>europe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Geometry set for 1 feature 
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -10 ymin: 35.42893 xmax: 20 ymax: 60.85257
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTIPOLYGON (((18.95645 57.9, 18.90059 57.9154...</code></pre>
+</div>
+</div>
+</section>
+<section id="st_difference" class="level3">
+<h3 class="anchored" data-anchor-id="st_difference">st_difference</h3>
+<p>The function takes two geometries as input parameters and returns the part of the first geometry that does not intersect with the second geometry.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>point_to_polygone_4326 <span class="ot">&lt;-</span> point_to_polygone<span class="sc">%&gt;%</span> <span class="fu">st_transform</span>(<span class="dv">4326</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>remove_coast_line <span class="ot">&lt;-</span> <span class="fu">st_difference</span>(point_to_polygone_4326,  europe)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(remove_coast_line) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_make_grid" class="level3">
+<h3 class="anchored" data-anchor-id="st_make_grid">st_make_grid</h3>
+<p>The function allows to create a grid from a polygon. There are 2 main arguments:</p>
+<ul>
+<li><p>“what”: to define the output (can be “polygons”, “corners” or “centers”)</p></li>
+<li><p>“cellsize”: size of each cell of the grid. Pay attention to the CRS in input (3857 to be in meter)</p></li>
+</ul>
+<p>st_make_grid produce a grid in the all area, then simply select the cells in the polygon.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>remove_coast_line_meter <span class="ot">=</span> <span class="fu">st_transform</span>(remove_coast_line, <span class="dv">3857</span>) <span class="co"># in meter</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>grid_cell <span class="ot">&lt;-</span> <span class="fu">st_make_grid</span>(remove_coast_line_meter, <span class="at">what =</span> <span class="st">"polygons"</span>, <span class="at">cellsize =</span> <span class="dv">10000</span>) <span class="co"># 10000m = 10km</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>grid_cell <span class="ot">=</span> grid_cell[remove_coast_line_meter, ]</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>grid_cell <span class="ot">=</span> grid_cell <span class="sc">%&gt;%</span> <span class="fu">st_transform</span>(<span class="dv">4326</span>) <span class="co"># back to degree</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(grid_cell)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_join" class="level3">
+<h3 class="anchored" data-anchor-id="st_join">st_join</h3>
+<p>The st_join function does the same thing as a left_join in {dplyr}, taking into account the spatial dimension. The ‘join’ argument can be specified by a predicate function with the same profile as ‘st_nearest_feature’ (e.g.&nbsp;st_contains, st_is_within_distance, st_overlaps, st_within, st_intersects).</p>
+<p>For example, we are going to associate for each point, its position in the grid realized previously. We define a unique ID for each sub-polygon and try to associate it with our origin points.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># associate to each cell a unique id</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>grid_cell <span class="ot">&lt;-</span> grid_cell <span class="sc">%&gt;%</span> <span class="fu">st_as_sf</span>() <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">geom =</span> x) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">grid_id =</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>())</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>grid_cell</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 2391 features and 1 field
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: -5.818938 ymin: 43.6641 xmax: -1.147699 ymax: 48.39968
+Geodetic CRS:  WGS 84
+First 10 features:
+                             geom grid_id
+1  POLYGON ((-3.213824 43.6641...       1
+2  POLYGON ((-3.123992 43.6641...       2
+3  POLYGON ((-3.034161 43.6641...       3
+4  POLYGON ((-2.944329 43.6641...       4
+5  POLYGON ((-2.854498 43.6641...       5
+6  POLYGON ((-2.764666 43.6641...       6
+7  POLYGON ((-2.674835 43.6641...       7
+8  POLYGON ((-2.585003 43.6641...       8
+9  POLYGON ((-2.495172 43.6641...       9
+10 POLYGON ((-2.40534 43.6641,...      10</code></pre>
+</div>
+</div>
+<p>Now we can associate our points with the unique identifier from our 100 km² polygons by searching for the polygon in which the points are located (st_within). It would also have been possible to try to associate them with the nearest polygon (st_nearest_feature).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># st_join</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a> data_geopackage_with_id <span class="ot">&lt;-</span> </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(data_geopackage,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>         grid_cell,</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">join =</span> st_within) </span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>data_geopackage_with_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 816 features and 4 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -5.818938 ymin: 43.6641 xmax: -1.225622 ymax: 48.3785
+Geodetic CRS:  WGS 84
+First 10 features:
+   Longitude Latitude Beaufort grid_id                       geom
+1  -4.541957 48.34592        2    2390 POINT (-4.541957 48.34592)
+2  -4.620433 48.29903        2    2380 POINT (-4.620433 48.29903)
+3  -4.709607 48.22907        2    2370 POINT (-4.709607 48.22907)
+4  -4.709600 48.22906        2    2370   POINT (-4.7096 48.22906)
+5  -4.711338 47.96489        2    2316 POINT (-4.711338 47.96489)
+6  -4.711300 47.96480        3    2316    POINT (-4.7113 47.9648)
+7  -4.680827 47.89950        3    2303  POINT (-4.680827 47.8995)
+8  -4.624492 47.83268        3    2284 POINT (-4.624492 47.83268)
+9  -4.504307 47.66183        3    2212 POINT (-4.504307 47.66183)
+10 -4.393653 47.51744        3    2157 POINT (-4.393653 47.51744)</code></pre>
+</div>
+</div>
+</section>
+<section id="st_intersects" class="level3">
+<h3 class="anchored" data-anchor-id="st_intersects">st_intersects</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look for intersection</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_intersects</span>(data_geopackage, grid_cell)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sparse geometry binary predicate list of length 816, where the
+predicate was `intersects'
+first 10 elements:
+ 1: 2390
+ 2: 2380
+ 3: 2370
+ 4: 2370
+ 5: 2316
+ 6: 2316
+ 7: 2303
+ 8: 2284
+ 9: 2212
+ 10: 2157</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset data in the intersection</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>data_geopackage[<span class="fu">st_intersects</span>(data_geopackage, grid_cell) <span class="sc">%&gt;%</span> lengths <span class="sc">&gt;</span> <span class="dv">0</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 814 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -5.813713 ymin: 43.66513 xmax: -1.225622 ymax: 48.3785
+Geodetic CRS:  WGS 84
+First 10 features:
+   Longitude Latitude Beaufort                       geom
+1  -4.541957 48.34592        2 POINT (-4.541957 48.34592)
+2  -4.620433 48.29903        2 POINT (-4.620433 48.29903)
+3  -4.709607 48.22907        2 POINT (-4.709607 48.22907)
+4  -4.709600 48.22906        2   POINT (-4.7096 48.22906)
+5  -4.711338 47.96489        2 POINT (-4.711338 47.96489)
+6  -4.711300 47.96480        3    POINT (-4.7113 47.9648)
+7  -4.680827 47.89950        3  POINT (-4.680827 47.8995)
+8  -4.624492 47.83268        3 POINT (-4.624492 47.83268)
+9  -4.504307 47.66183        3 POINT (-4.504307 47.66183)
+10 -4.393653 47.51744        3 POINT (-4.393653 47.51744)</code></pre>
+</div>
+</div>
+</section>
+<section id="st_intersection" class="level3">
+<h3 class="anchored" data-anchor-id="st_intersection">st_intersection</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_intersection</span>(data_geopackage <span class="sc">%&gt;%</span> <span class="fu">head</span>(), grid_cell)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attribute variables are assumed to be spatially constant throughout
+all geometries</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 4 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -4.711338 ymin: 47.9648 xmax: -4.541957 ymax: 48.34592
+Geodetic CRS:  WGS 84
+  Longitude Latitude Beaufort grid_id                       geom
+5 -4.711338 47.96489        2    2316 POINT (-4.711338 47.96489)
+6 -4.711300 47.96480        3    2316    POINT (-4.7113 47.9648)
+3 -4.709607 48.22907        2    2370 POINT (-4.709607 48.22907)
+4 -4.709600 48.22906        2    2370   POINT (-4.7096 48.22906)
+2 -4.620433 48.29903        2    2380 POINT (-4.620433 48.29903)
+1 -4.541957 48.34592        2    2390 POINT (-4.541957 48.34592)</code></pre>
+</div>
+</div>
+</section>
+<section id="st_buffer" class="level3">
+<h3 class="anchored" data-anchor-id="st_buffer">st_buffer</h3>
+<p>st_buffer computes a buffer around this geometry/each geometry. The parameter ‘dist’ gives the width of the buffer and ‘endCapStyle’ the style of line ends.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">=</span> <span class="fu">st_as_sfc</span>(<span class="st">"LINESTRING(0 0,1 5,4 5,5 2,8 2,9 4,4 6.5)"</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(l1, <span class="at">col=</span><span class="st">'blue'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_buffer</span>(l1, <span class="at">dist =</span> .<span class="dv">1</span>, <span class="at">endCapStyle=</span><span class="st">"ROUND"</span>), <span class="at">reset =</span> <span class="cn">FALSE</span>, <span class="at">main =</span> <span class="st">"endCapStyle: ROUND"</span>, <span class="at">col=</span><span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-27-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_buffer</span>(l1, <span class="at">dist =</span> .<span class="dv">2</span>, <span class="at">endCapStyle=</span><span class="st">"FLAT"</span>), <span class="at">reset =</span> <span class="cn">FALSE</span>, <span class="at">main =</span> <span class="st">"endCapStyle: FLAT"</span>, <span class="at">col=</span><span class="st">'green'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_Spatial_files/figure-html/unnamed-chunk-27-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="st_crs" class="level3">
+<h3 class="anchored" data-anchor-id="st_crs">st_crs</h3>
+<p>Retrieve coordinate reference system from sf object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(data_geopackage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: WGS 84 
+  wkt:
+GEOGCRS["WGS 84",
+    ENSEMBLE["World Geodetic System 1984 ensemble",
+        MEMBER["World Geodetic System 1984 (Transit)"],
+        MEMBER["World Geodetic System 1984 (G730)"],
+        MEMBER["World Geodetic System 1984 (G873)"],
+        MEMBER["World Geodetic System 1984 (G1150)"],
+        MEMBER["World Geodetic System 1984 (G1674)"],
+        MEMBER["World Geodetic System 1984 (G1762)"],
+        MEMBER["World Geodetic System 1984 (G2139)"],
+        MEMBER["World Geodetic System 1984 (G2296)"],
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]],
+        ENSEMBLEACCURACY[2.0]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["geodetic latitude (Lat)",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["geodetic longitude (Lon)",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    USAGE[
+        SCOPE["Horizontal component of 3D system."],
+        AREA["World."],
+        BBOX[-90,-180,90,180]],
+    ID["EPSG",4326]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
